@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { GameContext } from "app/game-context";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Players = () => {
@@ -18,19 +19,19 @@ const Players = () => {
     "Imu",
   ];
   const [newPlayerName, setNewPlayerName] = useState("");
-  const [playersList, setPlayersList] = useState<string[]>([]);
+  const { players, setPlayers, setRound } = useContext(GameContext);
 
   return (
-    // TODO this shouldn't be called App-header
+    // {/* // TODO this shouldn't be called App-header */}
     <div className="App-header">
       <p>Welcome to Neverland Picolo</p>
       <p>Who's playing?</p>
       {theGroup.map(
         (name) =>
-          !playersList.includes(name) && (
+          !players.includes(name) && (
             <button
               key={`add-${name}`}
-              onClick={() => setPlayersList([...playersList, name])}
+              onClick={() => setPlayers && setPlayers([...players, name])}
             >
               {name}
             </button>
@@ -39,7 +40,7 @@ const Players = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setPlayersList([...playersList, newPlayerName]);
+          setPlayers && setPlayers([...players, newPlayerName]);
         }}
       >
         <input
@@ -48,7 +49,7 @@ const Players = () => {
         />
         <input type="submit" value="add" />
       </form>
-      <button onClick={() => setPlayersList([])}>Clear</button>
+      <button onClick={() => setPlayers && setPlayers([])}>Clear</button>
       <div
         style={{
           display: "flex",
@@ -56,12 +57,12 @@ const Players = () => {
           gap: "20px",
         }}
       >
-        {playersList.map((player) => (
+        {players.map((player) => (
           <p>{player}</p>
         ))}
       </div>
       <Link to="/play">
-        <button>PLAY</button>
+        <button onClick={() => setRound && setRound(0)}>PLAY</button>
       </Link>
     </div>
   );

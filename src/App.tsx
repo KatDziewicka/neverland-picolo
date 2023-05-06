@@ -1,9 +1,9 @@
-import React from "react";
 import "./App.css";
-import { Prompt } from "./components/prompt";
+import { Prompt } from "features/prompt";
 import Airtable from "airtable";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Players } from "features/players";
+import GameContextProvider from "app/game-context-provider";
 
 var base = new Airtable({
   apiKey:
@@ -13,14 +13,13 @@ var base = new Airtable({
 //add redux?
 const App = () => {
   return (
-    <div>
-      <p>main</p>
+    <GameContextProvider>
       <Routes>
         <Route path="/home" element={<Players />} />
         <Route path="/play" element={<Prompt base={base} />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
-    </div>
+    </GameContextProvider>
   );
 };
 
