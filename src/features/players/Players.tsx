@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { GameContext } from "app/game-context";
+import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Players = () => {
   const theGroup = [
@@ -17,46 +19,51 @@ const Players = () => {
     "Imu",
   ];
   const [newPlayerName, setNewPlayerName] = useState("");
-  const [playersList, setPlayersList] = useState<string[]>([]);
+  const { players, setPlayers, setRound } = useContext(GameContext);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Welcome to Neverland Picolo</p>
-        <p>Who's playing?</p>
-        {theGroup.map((name) => (
-          <button
-            key={`add-${name}`}
-            onClick={() => setPlayersList([...playersList, name])}
-          >
-            {name}
-          </button>
+    // {/* // TODO this shouldn't be called App-header */}
+    <div className="App-header">
+      <p>Welcome to Neverland Picolo</p>
+      <p>Who's playing?</p>
+      {theGroup.map(
+        (name) =>
+          !players.includes(name) && (
+            <button
+              key={`add-${name}`}
+              onClick={() => setPlayers && setPlayers([...players, name])}
+            >
+              {name}
+            </button>
+          )
+      )}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setPlayers && setPlayers([...players, newPlayerName]);
+        }}
+      >
+        <input
+          placeholder="Type the name of a player..."
+          onChange={(e) => setNewPlayerName(e.target.value)}
+        />
+        <input type="submit" value="add" />
+      </form>
+      <button onClick={() => setPlayers && setPlayers([])}>Clear</button>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "20px",
+        }}
+      >
+        {players.map((player) => (
+          <p>{player}</p>
         ))}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setPlayersList([...playersList, newPlayerName]);
-          }}
-        >
-          <input
-            placeholder="Type the name of a player..."
-            onChange={(e) => setNewPlayerName(e.target.value)}
-          />
-          <input type="submit" value="add" />
-        </form>
-        <button onClick={() => setPlayersList([])}>Clear</button>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "20px",
-          }}
-        >
-          {playersList.map((player) => (
-            <p>{player}</p>
-          ))}
-        </div>
-      </header>
+      </div>
+      <Link to="/play">
+        <button onClick={() => setRound && setRound(0)}>PLAY</button>
+      </Link>
     </div>
   );
 };
