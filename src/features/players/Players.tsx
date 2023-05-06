@@ -23,46 +23,107 @@ const Players = () => {
 
   return (
     // {/* // TODO this shouldn't be called App-header */}
-    <div className="App-header">
+    <div
+      style={{
+        backgroundColor: "#815794",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        gap: "2vh",
+        alignItems: "center",
+        justifyItems: "center",
+        fontSize: "calc(10px + 2vmin)",
+        color: "white",
+      }}
+    >
       <p>Welcome to Neverland Picolo</p>
       <p>Who's playing?</p>
-      {theGroup.map(
-        (name) =>
-          !players.includes(name) && (
-            <button
-              key={`add-${name}`}
-              onClick={() => setPlayers && setPlayers([...players, name])}
-            >
-              {name}
-            </button>
-          )
-      )}
+      <div
+        style={{
+          height: "40%",
+          width: "45%",
+          display: "flex",
+          gap: "5px",
+        }}
+      >
+        {theGroup.map(
+          (name) =>
+            !players.includes(name) && (
+              <button
+                key={`add-${name}`}
+                onClick={() => setPlayers && setPlayers([...players, name])}
+                style={{ height: "35px", width: "80px", borderRadius: "12px" }}
+              >
+                {name}
+              </button>
+            )
+        )}
+      </div>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           setPlayers && setPlayers([...players, newPlayerName]);
         }}
+        style={{ display: "flex", gap: "10px", marginTop: "5vh" }}
       >
         <input
           placeholder="Type the name of a player..."
           onChange={(e) => setNewPlayerName(e.target.value)}
+          style={{ minWidth: "25vh", padding: "10px" }}
         />
-        <input type="submit" value="add" />
+        <input
+          type="submit"
+          value="ADD"
+          style={{ minWidth: "10vh", padding: "10px" }}
+        />
       </form>
-      <button onClick={() => setPlayers && setPlayers([])}>Clear</button>
       <div
         style={{
+          height: "40%",
+          width: "45%",
           display: "flex",
-          flexDirection: "row",
-          gap: "20px",
+          gap: "5px",
         }}
       >
         {players.map((player) => (
-          <p>{player}</p>
+          <button
+            key={`remove-${player}`}
+            onClick={() =>
+              setPlayers &&
+              setPlayers(players.filter((name) => name !== player))
+            }
+            style={{ height: "35px", width: "80px", borderRadius: "12px" }}
+          >
+            {player + " X"}
+          </button>
         ))}
       </div>
+      <button
+        onClick={() => setPlayers && setPlayers([])}
+        style={{
+          width: "30vh",
+          height: "5vh",
+          backgroundColor: "#ED6F84",
+          borderRadius: "12px",
+          color: "white",
+        }}
+      >
+        CLEAR
+      </button>
+      {/* TODO there's a link on top of the button */}
       <Link to="/play">
-        <button onClick={() => setRound && setRound(0)}>PLAY</button>
+        <button
+          style={{
+            width: "30vh",
+            height: "10vh",
+            backgroundColor: "#8F7C97",
+            borderRadius: "12px",
+            color: "white",
+          }}
+          onClick={() => setRound && setRound(0)}
+        >
+          PLAY
+        </button>
       </Link>
     </div>
   );
