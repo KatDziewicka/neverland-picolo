@@ -1,6 +1,7 @@
 import { AirtableBase } from "airtable/lib/airtable_base";
 import { GameContext } from "app/game-context";
-import { useContext, useEffect } from "react";
+import { Loading } from "features/loading";
+import { useContext, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { shuffleStrings } from "utils";
 
@@ -8,7 +9,11 @@ const Prompt = ({ base }: { base: AirtableBase }) => {
   const { players, gamePrompts, setGamePrompts, round, setRound } =
     useContext(GameContext);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
+    setIsLoading(true);
+
     base("Table 1")
       .select({
         view: "Grid view",
@@ -31,12 +36,17 @@ const Prompt = ({ base }: { base: AirtableBase }) => {
                 .slice(0, 25)
             );
         }
+        setIsLoading(false);
       });
   }, [base, players, setGamePrompts]);
 
   const shuffledPrompts = shuffleStrings(
     gamePrompts.map((el) => el._rawJson.fields.prompt)
   );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="App-header">
