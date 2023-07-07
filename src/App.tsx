@@ -4,6 +4,7 @@ import Airtable from "airtable";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Players } from "features/players";
 import GameContextProvider from "app/game-context-provider";
+import { GameOver } from "features/game-over";
 
 var base = new Airtable({
   apiKey:
@@ -17,6 +18,7 @@ const App = () => {
       <Routes>
         <Route path="/home" element={<Players />} />
         <Route path="/play" element={<Prompt base={base} />} />
+        <Route path="/game-over" element={<GameOver />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </GameContextProvider>

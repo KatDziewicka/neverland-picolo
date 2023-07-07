@@ -1,7 +1,7 @@
 import { AirtableBase } from "airtable/lib/airtable_base";
 import { GameContext } from "app/game-context";
 import { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { shuffleStrings } from "utils";
 
 const Prompt = ({ base }: { base: AirtableBase }) => {
@@ -21,11 +21,14 @@ const Prompt = ({ base }: { base: AirtableBase }) => {
         if (records && records.length) {
           setGamePrompts &&
             setGamePrompts(
-              records.filter((record) =>
-                record._rawJson.fields.players_involved.every((p: string) =>
-                  players.includes(p)
+              records
+                .filter((record) =>
+                  record._rawJson.fields.players_involved.every(
+                    (p: string) =>
+                      players.includes(p) || p === "everyone" || p === "random"
+                  )
                 )
-              )
+                .slice(0, 25)
             );
         }
       });
@@ -37,8 +40,11 @@ const Prompt = ({ base }: { base: AirtableBase }) => {
 
   return (
     <div className="App-header">
-      <p>{shuffledPrompts[round]}</p>
+      <p>
+        {shuffledPrompts[round].replace("[random]", shuffleStrings(players)[0])}
+      </p>
       <button onClick={() => setRound && setRound(round + 1)}>NEXT</button>
+      {round === shuffledPrompts.length && <Navigate to="/game-over" replace />}
       <Link to="/home">
         <button>GO BACK</button>
       </Link>
