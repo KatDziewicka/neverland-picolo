@@ -41,7 +41,11 @@ const Prompt = ({ base }: { base: AirtableBase }) => {
   return (
     <div className="App-header">
       <p>
-        {shuffledPrompts[round].replace("[random]", shuffleStrings(players)[0])}
+        {shuffledPrompts[round] &&
+          shuffledPrompts[round].replace(
+            "[random]",
+            shuffleStrings(players)[0]
+          )}
       </p>
       <button onClick={() => setRound && setRound(round + 1)}>NEXT</button>
       {round === shuffledPrompts.length && <Navigate to="/game-over" replace />}
