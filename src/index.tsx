@@ -4,6 +4,9 @@ import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
+import { config } from "dotenv";
+
+config();
 
 const container = document.getElementById("root")!;
 const root = createRoot(container!);

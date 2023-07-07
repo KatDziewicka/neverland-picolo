@@ -6,10 +6,12 @@ import { Players } from "features/players";
 import GameContextProvider from "app/game-context-provider";
 import { GameOver } from "features/game-over";
 
+const { REACT_APP_AIRTABLE_API_KEY = "", REACT_APP_AIRTABLE_BASE = "" } =
+  process.env;
+
 var base = new Airtable({
-  apiKey:
-    "patxJAheQLScdh7Rw.e9736efe5569d24c3f4d7517890877c873ac3a2ee5a1a975db90263b9c743f62",
-}).base("app9cX0FJtk3FkpBi");
+  apiKey: REACT_APP_AIRTABLE_API_KEY,
+}).base(REACT_APP_AIRTABLE_BASE);
 
 //add redux?
 const App = () => {
